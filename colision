@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+<script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+<script src="http://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+<script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js" ></script>
+<script>
+   AFRAME.registerComponent('explode', {
+       init: function() {
+           var el = this.el;
+           el.addEventListener("collidestart", function () {
+               console.log('collision detected');
+               el.parentElement.removeChild(el);
+    });
+  }
+});
+</script>
+</head>
+<body>
+ <a-scene physics=" driver: ammo">
+   <a-assets>
+    <a-asset-item id="human" response-type="arraybuffer" src="human.glb"></a-asset-item>
+   </a-assets> 
+   <a-camera position="2 5 2" look-controls wasd-controls>
+        <a-cursor></a-cursor>
+        </a-camera>
+  <a-entity explode gltf-model="#human" class="enemy" ammo-body="type:   kinematic; 
+     emitCollisionEvents: true;" ammo-shape="type: sphere"
+     position="3 5 0" scale="0.1 0.1 0.1" rotation="0 180 0">      
+    </a-entity>
+  <a-sphere explode ammo-body="type: kinematic; emitCollisionEvents: true;"
+    ammo-shape="type: sphere" position="1 5 0" velocity="1 0 0" radius="0.5"
+    color="blue"></a-sphere>
+  <a-sphere explode ammo-body="type: kinematic; emitCollisionEvents: true;"
+    ammo-shape="type: sphere" position="5 5 0" velocity="0 0 0" radius="0.5"
+    color="blue"></a-sphere>
+ 
+ </a-scene>
+</body>
+</html>
